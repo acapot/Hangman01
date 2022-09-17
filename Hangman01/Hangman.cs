@@ -129,9 +129,10 @@ namespace Hangman01
             }
             else
             {
-                chances--;
+                
                 if(guessedHoleWord.Length > 1)
                 {
+                    chances--;
                     Console.WriteLine("The secret word is not \" " + guessedHoleWord + " \" keep playing !! ");
                 }
                 
@@ -156,7 +157,14 @@ namespace Hangman01
             }
             else
             {
-                Console.WriteLine("Wrong letter, try again");
+                if (!guessedWord.ToString().Contains(guessedLetter))
+                {
+                    chances--;
+                    Console.WriteLine("Wrong letter, try again");
+                    
+                }
+                else { Console.WriteLine("you have already tried with this letter, try again"); }
+                
             }
 
             Console.WriteLine(guessedWord);
