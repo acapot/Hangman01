@@ -106,7 +106,7 @@ namespace Hangman01
                     CheckLetterInSecretWord();
                     CheckWin();
                 }
-                else if(guessedHoleWord.Length > 1)
+                else
                 {
                     CheckWin();
                 }               
