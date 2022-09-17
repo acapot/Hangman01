@@ -14,6 +14,7 @@ namespace Hangman01
        
         String? randomWord;
         char guessedLetter;
+        string guessedHoleWord;
         StringBuilder guessedWord = new StringBuilder();
         StringBuilder checkWord = new StringBuilder();
         int indexInSecretWord;
@@ -60,7 +61,7 @@ namespace Hangman01
         {
             Console.WriteLine("***************");
             Console.WriteLine("***************");
-           
+            playagain = 'x';
             while (playagain != 'y' && playagain != 'n')
             {
                 Console.WriteLine("Do you want to play again (y/n)");
@@ -88,18 +89,32 @@ namespace Hangman01
 
         public void ChooseLetterAndCheck()
         {
-
+            
             while (guessedWord.ToString().Contains('_') && ifContinue)
             {
-                Console.WriteLine("***************");
-                Console.WriteLine("Choose a letter");
-                guessedLetter = Console.ReadLine()[0];
-                CheckLetterInSecretWord();
-                CheckWin();
+                do
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("******Choose a letter or the hole word******");
+                    
+                    guessedHoleWord = Console.ReadLine();
+                } while (guessedHoleWord.Length == 0 && ifContinue);
+
+                if (guessedHoleWord.Length == 1)
+                {
+                    guessedLetter = guessedHoleWord[0];
+                    CheckLetterInSecretWord();
+                    CheckWin();
+                }
+                else if(guessedHoleWord.Length > 1)
+                {
+                    CheckWin();
+                }               
+                
             }
-            
-            //LinesOfSecretWord();
         }
+
+
 
         public void CheckWin()
         {
@@ -107,10 +122,21 @@ namespace Hangman01
             {
                 ifContinue = false;
                 Console.WriteLine("Game Over");
-            }else if(guessedWord.ToString().Equals(randomWord.ToString()))
+            }else if(guessedWord.ToString().Equals(randomWord.ToString()) || guessedHoleWord.ToString().Equals(randomWord.ToString()))
             {
                 ifContinue = false;
                 Console.WriteLine("Congratulation you Won !!!!!");
+            }
+            else
+            {
+                chances--;
+                if(guessedHoleWord.Length > 1)
+                {
+                    Console.WriteLine("The secret word is not \" " + guessedHoleWord + " \" keep playing !! ");
+                }
+                
+
+                Console.WriteLine("you have " + chances + " chances left!");
             }
         }
         public void CheckLetterInSecretWord()
@@ -128,11 +154,9 @@ namespace Hangman01
 
                 }
             }
-            else {
-                chances--;
+            else
+            {
                 Console.WriteLine("Wrong letter, try again");
-                Console.WriteLine("you have "+ chances +" chances left!");
-                
             }
 
             Console.WriteLine(guessedWord);
